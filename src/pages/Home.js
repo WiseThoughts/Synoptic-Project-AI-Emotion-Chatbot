@@ -6,7 +6,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   const handleQuestionnaire = () => {
-    alert("Questionnaire start button clicked.");
+  navigate("/questionnaire");
   };
 
   const handleChatbot = () => {
