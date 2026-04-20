@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../style/questionnaire.css";
 
@@ -271,12 +271,9 @@ export default function QuestionnaireQuestions() {
     sessionStorage.setItem("questionnaire-stage", String(stage));
   }, [participantId, rankings, followups, overallBestSystem, ratings, chatMessages, stage]);
 
-  const selectedPrompt = useMemo(
-    () => SUGGESTED_PROMPTS.find((prompt) => prompt.id === selectedPromptId),
-    [selectedPromptId]
-  );
-
-  const selectedChat = chatMessages[selectedPromptId] || [];
+  const selectedChat = useMemo(() => {
+    return chatMessages[selectedPromptId] || [];
+  }, [chatMessages, selectedPromptId]);
 
   useEffect(() => {
     if (chatScrollRef.current) {
@@ -284,14 +281,16 @@ export default function QuestionnaireQuestions() {
     }
   }, [selectedChat, isGenerating, selectedPromptId]);
 
-  const isRankingValid = (promptId) => {
+  const isRankingValid = useCallback((promptId) => {
     const values = Object.values(rankings[promptId] || {});
     if (values.some((value) => !value)) return false;
+
     const uniqueValues = new Set(values);
     const expected = new Set(["1", "2", "3", "4", "5"]);
+
     if (uniqueValues.size !== 5) return false;
     return [...expected].every((value) => uniqueValues.has(value));
-  };
+  }, [rankings]);
 
   const comparisonPageComplete = useMemo(() => {
     const promptsComplete = COMPARISON_PROMPTS.every((prompt) => {
@@ -304,7 +303,7 @@ export default function QuestionnaireQuestions() {
     });
 
     return promptsComplete && overallBestSystem;
-  }, [rankings, followups, overallBestSystem]);
+  }, [followups, overallBestSystem, isRankingValid]);
 
   const modelEvaluationComplete = useMemo(() => {
     const hasAllRatings = RATING_ITEMS.every((item) => ratings[item.id]);
@@ -787,9 +786,9 @@ export default function QuestionnaireQuestions() {
                   </div>
                 </div>
               </div>
-              
             </div>
-                        <div className="questionnaire-safety-notice">
+
+            <div className="questionnaire-safety-notice">
               <p>
                 <strong>Prototype notice:</strong> This chatbot is a working
                 prototype. Please review all responses carefully and do not rely
