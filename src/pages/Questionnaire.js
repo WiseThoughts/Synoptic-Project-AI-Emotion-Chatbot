@@ -113,7 +113,7 @@ const INFORMATION_SECTIONS = [
     title: "Who has reviewed this research project?",
     body: [
       "This research project has been reviewed and approved by Manchester Metropolitan University’s Research Ethics Committee.",
-      "Ethical approval number (EthOS): [approval number]"
+      "Ethical approval number (EthOS): [88142]"
     ]
   },
   {
