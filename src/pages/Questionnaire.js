@@ -113,7 +113,7 @@ const INFORMATION_SECTIONS = [
     title: "Who has reviewed this research project?",
     body: [
       "This research project has been reviewed and approved by Manchester Metropolitan University’s Research Ethics Committee.",
-      "Ethical approval number (EthOS): [88142]"
+      "Ethical approval number (EthOS): [88412]"
     ]
   },
   {
@@ -125,7 +125,7 @@ const INFORMATION_SECTIONS = [
       "Supervisor:",
       "• Kate MacFarlane",
       "• k.macfarlane@mmu.ac.uk",
-      "Manchester Metropolitan Data Protection Officer our Data Protection Officer can be contacted using the dataprotection@mmu.ac.uk e-mail address, by calling +44 (0)7584 330586or in writing to: Data Protection Officer, Legal & Governance, Ormond Building, Lower Ormond Street, Manchester, M15 6BX",
+      "Manchester Metropolitan Data Protection Officer our Data Protection Officer can be contacted using the dataprotection@mmu.ac.uk e-mail address, by calling +44 (0)7584 330586 or in writing to: Data Protection Officer, Legal & Governance, Ormond Building, Lower Ormond Street, Manchester, M15 6BX",
       "UK Information Commissioner’s Office",
       "You have the right to complain directly to the Information Commissioner’s Office if you would like to complain about how we process your personal data:",
       "https://ico.org.uk/global/contact-us/"
