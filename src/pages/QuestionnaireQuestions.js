@@ -411,12 +411,11 @@ export default function QuestionnaireQuestions() {
             Page 1
           </button>
 
-          <button
-            type="button"
-            className={`questionnaire-stage-tab ${stage === 2 ? "active" : ""}`}
-            onClick={() => comparisonPageComplete && setStage(2)}
-            disabled={!comparisonPageComplete}
-          >
+            <button
+              type="button"
+              className={`questionnaire-stage-tab ${stage === 2 ? "active" : ""}`}
+              onClick={() => setStage(2)}
+            >
             Page 2
           </button>
         </div>
@@ -549,7 +548,6 @@ export default function QuestionnaireQuestions() {
                 className="questionnaire-continue-button"
                 type="button"
                 onClick={() => setStage(2)}
-                disabled={!comparisonPageComplete}
               >
                 Continue to Page 2
               </button>
