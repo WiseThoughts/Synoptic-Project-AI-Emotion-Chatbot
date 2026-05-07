@@ -48,7 +48,7 @@ const CONSENT_ITEMS = [
 const INFORMATION_SECTIONS = [
   {
     title: "Study title",
-    body: ["Synoptic Project Chatbot Study"]
+    body: ["Emotion Detection Chatbot"]
   },
   {
     title: "What is the purpose of this study?",
