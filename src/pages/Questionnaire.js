@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../style/questionnaire.css";
 
@@ -44,12 +44,11 @@ const CONSENT_ITEMS = [
     text: "I agree that anonymised data may be archived or used in future related academic outputs."
   }
 ];
+
 const INFORMATION_SECTIONS = [
   {
     title: "Study title",
-    body: [
-      "Synoptic Project Chatbot Study"
-    ]
+    body: ["Synoptic Project Chatbot Study"]
   },
   {
     title: "What is the purpose of this study?",
@@ -75,8 +74,8 @@ const INFORMATION_SECTIONS = [
   {
     title: "How will my data be handled?",
     body: [
-      "Your session is identified using a randomly generated participant ID rather than personally identifying information.",
-      "Responses are intended to be stored without direct identifying details."
+      "The questionnaire is now closed and responses are no longer being collected or stored.",
+      "The interface remains available only as a project demonstration."
     ]
   },
   {
@@ -163,39 +162,9 @@ export default function Questionnaire() {
   const [signatureConfirmed, setSignatureConfirmed] = useState(false);
 
   useEffect(() => {
-    const storedId = sessionStorage.getItem("participant-id");
-    const storedConsent = sessionStorage.getItem("participant-consent");
-    const storedSignature = sessionStorage.getItem("participant-signature-confirmed");
-
-    const idToUse = storedId || generateParticipantId();
-
-    setParticipantId(idToUse);
+    setParticipantId(generateParticipantId());
     setCurrentDate(getTodayDate());
-
-    sessionStorage.setItem("participant-id", idToUse);
-
-    if (storedConsent) {
-      try {
-        setConsentAnswers(JSON.parse(storedConsent));
-      } catch {
-        // ignore malformed session storage
-      }
-    }
-
-    if (storedSignature) {
-      setSignatureConfirmed(storedSignature === "true");
-    }
   }, []);
-
-  useEffect(() => {
-    if (!participantId) return;
-
-    sessionStorage.setItem("participant-consent", JSON.stringify(consentAnswers));
-    sessionStorage.setItem(
-      "participant-signature-confirmed",
-      String(signatureConfirmed)
-    );
-  }, [consentAnswers, signatureConfirmed, participantId]);
 
   const handleConsentChange = (questionId, value) => {
     setConsentAnswers((prev) => ({
@@ -204,17 +173,7 @@ export default function Questionnaire() {
     }));
   };
 
-  const requiredConsentComplete = useMemo(() => {
-    return CONSENT_ITEMS
-      .filter((item) => item.required)
-      .every((item) => consentAnswers[item.id] === "yes");
-  }, [consentAnswers]);
-
-  const allRequiredComplete = requiredConsentComplete && signatureConfirmed;
-
   const handleContinue = () => {
-    if (!allRequiredComplete) return;
-
     navigate("/questionnaire/questions");
   };
 
@@ -232,7 +191,7 @@ export default function Questionnaire() {
         <div className="questionnaire-title-block">
           <h1 className="questionnaire-title">Participant Information and Consent</h1>
           <p className="questionnaire-subtitle">
-            Please read the information below before completing the consent form.
+            The questionnaire is closed. This page remains available for project demonstration only.
           </p>
         </div>
       </div>
@@ -240,7 +199,7 @@ export default function Questionnaire() {
       <div className="questionnaire-content">
         <div className="questionnaire-meta-card">
           <div className="questionnaire-meta-item">
-            <span className="questionnaire-meta-label">Participant ID</span>
+            <span className="questionnaire-meta-label">Demo Participant ID</span>
             <span className="questionnaire-meta-value">{participantId}</span>
           </div>
 
@@ -258,20 +217,20 @@ export default function Questionnaire() {
               <div className="questionnaire-info-block" key={section.title}>
                 <h3 className="questionnaire-info-heading">{section.title}</h3>
                 {section.body.map((paragraph, index) => (
-                <p className="questionnaire-info-text" key={`${section.title}-${index}`}>
+                  <p className="questionnaire-info-text" key={`${section.title}-${index}`}>
                     {paragraph.startsWith("http") ? (
-                    <a
+                      <a
                         href={paragraph}
                         target="_blank"
                         rel="noreferrer"
                         className="questionnaire-info-link"
-                    >
+                      >
                         {paragraph}
-                    </a>
+                      </a>
                     ) : (
-                    paragraph
+                      paragraph
                     )}
-                </p>
+                  </p>
                 ))}
               </div>
             ))}
@@ -328,7 +287,9 @@ export default function Questionnaire() {
 
           <div className="questionnaire-signature-card">
             <div className="questionnaire-signature-line">
-              <span className="questionnaire-signature-label">Participant ID used as signature confirmation:</span>
+              <span className="questionnaire-signature-label">
+                Demo participant ID used as signature confirmation:
+              </span>
               <span className="questionnaire-signature-value">{participantId}</span>
             </div>
 
@@ -351,23 +312,14 @@ export default function Questionnaire() {
         </section>
 
         <div className="questionnaire-footer-actions">
-          {!requiredConsentComplete && (
-            <p className="questionnaire-warning">
-              Required consent items 1–4 must all be marked Yes before continuing.
-            </p>
-          )}
-
-          {!signatureConfirmed && (
-            <p className="questionnaire-warning">
-              You must confirm the signature checkbox before continuing.
-            </p>
-          )}
+          <p className="questionnaire-warning">
+            This questionnaire is closed. No responses are being collected, saved, or submitted.
+          </p>
 
           <button
             className="questionnaire-continue-button"
             type="button"
             onClick={handleContinue}
-            disabled={!allRequiredComplete}
           >
             Continue to Questions
           </button>
