@@ -200,16 +200,13 @@ export default function QuestionnaireQuestions() {
   const chatScrollRef = useRef(null);
 
   useEffect(() => {
-    const storedParticipantId = sessionStorage.getItem("participant-id");
-
-    if (!storedParticipantId) {
-      navigate("/questionnaire");
-      return;
-    }
-
-    setParticipantId(storedParticipantId);
+    const demoParticipantId = `demo-${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2, 10)}`;
+  
+    setParticipantId(demoParticipantId);
     setCurrentDate(getTodayDate());
-  }, [navigate]);
+  }, []);
 
   const selectedChat = useMemo(() => {
     return chatMessages[selectedPromptId] || [];
